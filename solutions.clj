@@ -50,3 +50,23 @@
     (boolean (or (some fits? (normalize puzzle))
         (some fits? (normalize (rotate puzzle)))))))
 
+
+
+
+
+(fn sequs-horribilis
+  [n coll]
+  (letfn [(traverse [c sum max]
+            (cond
+             (nil? (seq c)) [nil sum]
+             (coll? (first c))
+                 (let [[r sum] (traverse (first c) sum max)]
+                     (vector (list r) sum))
+             (<= (+ (first c) sum) max)
+                 (let [[r sum] (traverse (next c) (+ (first c) sum) max)]
+                   (vector (cons (first c) r) sum))
+             :else [nil sum]
+             ))]
+    (vec (first (traverse coll 0 n)))))
+
+
