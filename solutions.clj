@@ -84,3 +84,20 @@
   (reify clojure.lang.ISeq
     (toString [_] (apply str (interpose ", "(sort coll))))
     (seq [_]  (seq (distinct coll)))))
+
+
+
+(defn prime-gen
+  ([] (prime-gen 2 {}))
+  ([i m]
+     (cond
+      (nil? (m i)) (cons i
+                    (lazy-seq (prime-gen (inc i) (assoc m (* i i) i))))
+      :else
+        (let [p (m i)]
+          (lazy-seq
+           (prime-gen (inc i)
+                      (assoc m
+                        (some #(when (nil? (m %)) %)  (iterate (partial + p) i))
+                        p)))))))
+ 
