@@ -74,3 +74,13 @@
     (vec (first (traverse coll 0 n)))))
 
 
+;113. Making Data Dance
+;Write a function that takes a variable number of integer arguments. If the output 
+;is coerced into a string, it should r;eturn a comma (and space) separated list of
+; the inputs sorted smallest to largest. If the output is coerced into a sequence,
+; it should return a seq of unique input elements in the same order as they were entered.
+ (fn data-dance
+  [ & coll]
+  (reify clojure.lang.ISeq
+    (toString [_] (apply str (interpose ", "(sort coll))))
+    (seq [_]  (seq (distinct coll)))))
