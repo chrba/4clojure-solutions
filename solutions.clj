@@ -1,4 +1,4 @@
-
+2
 ;106. Number Maze
 ;Given a pair of numbers, the start and end point, find a path between the two using 
 ;only three possible operations: double halve (odd numbers cannot be halved) add 2
@@ -87,6 +87,26 @@
 
 
 
+;116. Prime Sandwich
+;A balanced prime is a prime number which is also the mean of the primes directly before
+;and after it in the sequence of valid primes. Create a function which takes an integer
+;n, and returns true iff it is a balanced prime.
+(fn balanced-prime?
+  [n]
+  (let [prime? (fn [p] (cond
+                        (= p 1) false
+                        (= p 2) true
+                        (= 0 (mod p 2)) false
+                        :else (every? #(not= 0 (mod p %))
+                                      (range 3 (inc (int (Math/sqrt p))) 2))))
+        next-prime  (some #(when (prime? %) %) (iterate inc (inc n)))
+        prev-prime  (some #(when (prime? %) %) (iterate dec (dec n)))]
+    (and (prime? n) (= n (/ (+ next-prime prev-prime) 2)))))
+
+
+
+
+;iterative sieve of erathostenes
 (defn prime-gen
   ([] (prime-gen 2 {}))
   ([i m]
